@@ -18,7 +18,7 @@ start:
 	heroku local -f Procfile
 
 start-backend:
-	npm run -- --watch --verbose-watch
+	npm start -- --watch --verbose-watch
 
 start-frontend:
 	npx webpack --watch --progress
