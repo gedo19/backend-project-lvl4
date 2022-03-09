@@ -18,6 +18,7 @@ import qs from 'qs';
 import Pug from 'pug';
 import i18next from 'i18next';
 import ru from './locales/ru.js';
+import 'dotenv/config'
 // @ts-ignore
 
 import addRoutes from './routes/index.js';

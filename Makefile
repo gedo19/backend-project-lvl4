@@ -15,10 +15,10 @@ prepare:
 	cp -n .env.example .env || true
 
 start:
-	heroku local -f Procfile.dev
+	heroku local -f Procfile
 
 start-backend:
-	npm start -- --watch --verbose-watch
+	npm run -- --watch --verbose-watch
 
 start-frontend:
 	npx webpack --watch --progress
