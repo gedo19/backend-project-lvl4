@@ -18,7 +18,7 @@
          "<rootDir>/__tests__/helpers/"
       ],
       "setupFiles": [
-         "dotenv/config"
+         "<rootDir>/.jest/setEnvVars.js"
       ],
       "transform": {}
    },

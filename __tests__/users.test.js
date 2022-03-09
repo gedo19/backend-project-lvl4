@@ -15,7 +15,6 @@ describe('test users CRUD', () => {
 
   beforeAll(async () => {
     app = fastify({ logger: { prettyPrint: true } });
-    process.env.SESSION_KEY = '1A7234753778214125442A472D4A614E645267556B58703273357638792F765F';
     await init(app);
     knex = app.objection.knex;
     models = app.objection.models;
