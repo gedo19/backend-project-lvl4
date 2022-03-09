@@ -52,6 +52,7 @@ const setUpViews = (app) => {
 
 const setUpStaticAssets = (app) => {
   const pathPublic = path.join(__dirname, '..', 'dist');
+  console.log({pathPublic})
   app.register(fastifyStatic, {
     root: pathPublic,
     prefix: '/assets/',
