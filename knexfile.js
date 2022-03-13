@@ -10,7 +10,7 @@ const migrations = {
 };
 
 export const development = {
-  client: 'postgresql',
+  client: 'sqlite3',
   connection: {
     filename: './database.sqlite',
   },
