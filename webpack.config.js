@@ -1,4 +1,4 @@
-// @ts-check
+  // @ts-check
 
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
@@ -11,6 +11,12 @@ export default {
       {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
+      },
+      {
+        test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)/i,
+        generator: {
+          filename: 'fonts/[name][ext][query]'
+        }
       },
     ],
   },

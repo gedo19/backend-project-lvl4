@@ -1,0 +1,15 @@
+#modalSignin.modal.modal-signin.position-static.d-block.bg-secondary.py-5(tabindex='-1' role='dialog')
+  .modal-dialog(role='document')
+    .modal-content.rounded-5.shadow
+      .modal-header.p-5.pb-4.border-bottom-0
+        h2.fw-bold.mb-0 Sign up for free
+        button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+      .modal-body.p-5.pt-0
+        form
+          .form-floating.mb-3
+            input#floatingInput.form-control.rounded-4(type='email' placeholder='name@example.com')
+            label(for='floatingInput') Email address
+          .form-floating.mb-3
+            input#floatingPassword.form-control.rounded-4(type='password' placeholder='Password')
+            label(for='floatingPassword') Password
+          button.w-100.mb-2.btn.btn-lg.rounded-4.btn-primary(type='submit') Sign up

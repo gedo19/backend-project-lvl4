@@ -2,15 +2,15 @@
 
 export default {
   translation: {
-    appName: 'Fastify Шаблон',
+    appName: 'Менеджер задач',
     flash: {
       session: {
         create: {
-          success: 'Вы залогинены',
-          error: 'Неправильный емейл или пароль',
+          success: 'Вход выполнен',
+          error: 'Неправильный e-mail или пароль',
         },
         delete: {
-          success: 'Вы разлогинены',
+          success: 'Выход выполнен',
         },
       },
       users: {
@@ -19,10 +19,11 @@ export default {
           success: 'Пользователь успешно зарегистрирован',
         },
       },
-      authError: 'Доступ запрещён! Пожалуйста, авторизируйтесь.',
+      authError: 'Доступ запрещён! Пожалуйста, выполните вход',
     },
     layouts: {
       application: {
+        home: 'На главную',
         users: 'Пользователи',
         signIn: 'Вход',
         signUp: 'Регистрация',
@@ -36,6 +37,12 @@ export default {
           submit: 'Войти',
         },
       },
+      placeholders: {
+        firstname: 'Имя',
+        lastname: 'Фамилия',
+        email: 'mail@example.ru',
+        password: 'Пароль',
+      },
       users: {
         id: 'ID',
         email: 'Email',
@@ -47,7 +54,7 @@ export default {
       },
       welcome: {
         index: {
-          hello: 'Привет от Хекслета!',
+          hello: 'Добро пожаловать!',
           description: 'Практические курсы по программированию',
           more: 'Узнать Больше',
         },
