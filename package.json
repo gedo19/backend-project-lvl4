@@ -55,10 +55,13 @@
       "npm-check-updates": "^12.3.0",
       "objection": "^3.0.1",
       "objection-unique": "^1.2.2",
+      "pg": "^8.7.3",
+      "pg-hstore": "^2.3.4",
       "pino-pretty": "^7.5.1",
       "point-of-view": "^5.1.0",
       "pug": "^3.0.2",
       "qs": "^6.10.3",
+      "sequelize": "^6.17.0",
       "sqlite3": "^5.0.2",
       "webpack": "^5.68.0"
    },
