@@ -28,7 +28,10 @@ export const test = {
 
 export const production = {
   client: 'pg',
-  connection: 'postgres://zhdpyutkrlamrr:3884948a6251087db78eb9a0032b8d1ca9a781856e8de2feedadecf7e5e710bb@ec2-3-209-61-239.compute-1.amazonaws.com:5432/d499f54if4ni9v',
+  connection: {
+    connectionString: process.env.DATABASE_URL,
+    ssl: { rejectUnauthorized: false },
+  },
   useNullAsDefault: true,
   migrations,
 };
