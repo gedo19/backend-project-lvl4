@@ -15,7 +15,7 @@ export default class User extends unique(Model) {
   static get jsonSchema() {
     return {
       type: 'object',
-      required: ['lastname', 'lastname' ,'email', 'password'],
+      required: ['lastname', 'lastname', 'email', 'password'],
       properties: {
         id: { type: 'integer' },
         firstname: { type: 'string', minLength: 1 },
@@ -28,6 +28,10 @@ export default class User extends unique(Model) {
 
   set password(value) {
     this.passwordDigest = encrypt(value);
+  }
+
+  fullName() {
+    return `${this.firstname} ${this.lastname}`;
   }
 
   verifyPassword(password) {

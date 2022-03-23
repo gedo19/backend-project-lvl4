@@ -1,0 +1,26 @@
+extends ../layouts/application.pug
+
+block header
+  = t('layouts.application.statuses')
+
+block content
+  a(href=route('newStatus')).btn.btn-primary= t('views.statuses.create')
+  table.table.table-borderless.table-striped.mt-5.bg-white
+    thead
+      tr
+        th= t('views.statuses.id')
+        th= t('views.statuses.name')
+        th= t('views.statuses.createdAt')
+        th= t('views.statuses.options')
+    tbody
+      each taskStatus in taskStatuses
+        tr
+          td= taskStatus.id
+          td= taskStatus.name
+          td= formatDate(taskStatus.createdAt)
+          td
+            .d-flex.flex-wrap
+              a(href=route('editStatus', { id: taskStatus.id })).btn.btn-outline-primary.me-1= t('views.statuses.edit.submit')
+              +formFor()(action=route(`deleteStatus`, { id: taskStatus.id }) method='post')
+                input(name="_method" type="hidden" value="DELETE")
+                input(type='submit' value= t('views.statuses.delete.submit')).btn.btn-outline-danger

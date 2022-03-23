@@ -3,40 +3,42 @@ include ../mixins/forms.pug
 doctype html
 html(lang="ru")
   head
-    title Менеджер задач
-    script(src=assetPath('main.js'))
+    title= t('appName')
     link(href=assetPath('main.css') rel="stylesheet")
+    script(src=assetPath('main.js'))
     meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
-  body.d-flex.flex-column.min-vh-100
-    header.p-2.mb-2.bg-dark.text-white
-      nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
-        .container-xl
-          a.navbar-brand(href=route('root'))= t('appName')
-          button.navbar-toggler(data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent")
-            span.navbar-toggler-icon
-          .collapse.navbar-collapse(id="navbarToggleExternalContent")
-            ul.navbar-nav.me-auto.mb-2.mb-lg-0
+  body.d-flex.flex-column.min-vh-100.bg-light
+    nav.navbar.navbar-expand-lg.navbar-light.bg-white.mb-3
+      .container
+        a.navbar-brand(href=route('root'))= t('appName')
+        button.navbar-toggler(data-bs-toggle='collapse' data-bs-target="#navbarToggleExternalContent")
+          span.navbar-toggler-icon
+        #navbarToggleExternalContent.collapse.navbar-collapse
+          ul.navbar-nav.justify-content-end.w-100
+            li.nav-item.me-auto
+              a.nav-link(href=route('users'))= t('layouts.application.users')
+            if isAuthenticated()
               li.nav-item
-                a.nav-link(href=route('users'))= t('layouts.application.users')
-            ul.navbar-nav
-              if isAuthenticated()
-                li.nav-item
-                  +buttonTo(route('session'), 'delete')(class="btn nav-link" value=t('layouts.application.signOut'))
-              else
-                li.nav-item
-                  a.btn.btn-outline-light.me-2(href=route('newSession'))= t('layouts.application.signIn')
-                li.nav-item
-                  a.btn.btn-warning(href=route('newUser'))= t('layouts.application.signUp')
+                a.nav-link(href=route('statuses'))= t('layouts.application.statuses')
+              li.nav-item
+                +buttonTo(route('session'), 'delete')(class="btn nav-link" value=t('layouts.application.signOut'))
+            else
+              li.nav-item
+                a.nav-link(href=route('newSession'))= t('layouts.application.signIn')
+              li.nav-item
+                a.nav-link(href=route('newUser'))= t('layouts.application.signUp')
     .container.wrapper.flex-grow-1
 
       each messages, type in reply.flash() || []
         each message in messages
           div.alert(class=`alert-${getAlertClass(type)}`)= message
 
-      h1.my-4
+      h1.display-4.fw-bold.mt-4
         block header
       block content
 
-    footer
-      .container.my-5.pt-4.border-top
-        a(target="_blank" href="https://ru.hexlet.io") Hexlet
+    footer.bg-dark.text-light
+      .container.py-2
+        a.d-flex.align-items-center.link-light(target="_blank" href='https://github.com/gedo19/backend-project-lvl4')
+          i.bi-github.fs-2.me-2(role="img" aria-label="GitHub")
+          | Source Code

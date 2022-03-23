@@ -15,6 +15,8 @@ mixin input(entity, propertyName, placeholder, errors = {})
       name=getInputName(propertyName)
       class=classLine
       value=_.get(entity, propertyName, '')
+      placeholder= placeholder
+      required
     )&attributes(attributes)
     label(
       for= inputId
@@ -23,7 +25,7 @@ mixin input(entity, propertyName, placeholder, errors = {})
       .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
 
 mixin submit(form = null)
-  input(class='btn btn-outline-dark' type='submit')&attributes(attributes)
+  input.btn.btn-outline-primary(type='submit')&attributes(attributes)
 
 mixin buttonTo(action, method)
   form(action=action, method="post")

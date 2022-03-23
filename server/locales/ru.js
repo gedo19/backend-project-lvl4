@@ -18,13 +18,38 @@ export default {
           error: 'Не удалось зарегистрировать',
           success: 'Пользователь успешно зарегистрирован',
         },
+        edit: {
+          error: 'Вы не можете редактировать другого пользователя',
+          success: 'Пользователь успешно изменён',
+        },
+        delete: {
+          error: 'Вы не можете удалять другого пользователя',
+          success: 'Пользователь успешно удалён',
+        },
+      },
+      statuses: {
+        create: {
+          error: 'Не удалось создать статус',
+          success: 'Статус успешно создан',
+        },
+        edit: {
+          error: 'Не удалось изменить статус',
+          success: 'Статус успешно изменён',
+        },
+        delete: {
+          error: 'Не удалось удалить статус',
+          success: 'Статус успешно удалён',
+        },
       },
       authError: 'Доступ запрещён! Пожалуйста, выполните вход',
     },
     layouts: {
       application: {
-        home: 'На главную',
         users: 'Пользователи',
+        editUser: 'Изменение пользователя',
+        statuses: 'Статусы',
+        createStatus: 'Создание статуса',
+        editStatus: 'Изменение статуса',
         signIn: 'Вход',
         signUp: 'Регистрация',
         signOut: 'Выход',
@@ -40,17 +65,44 @@ export default {
       placeholders: {
         firstname: 'Имя',
         lastname: 'Фамилия',
-        email: 'mail@example.ru',
+        email: 'Email',
         password: 'Пароль',
+        name: 'Наименование',
       },
       users: {
         id: 'ID',
         fullName: 'Полное имя',
         email: 'Email',
         createdAt: 'Дата создания',
+        options: 'Опции',
         new: {
           submit: 'Сохранить',
           signUp: 'Регистрация',
+        },
+        edit: {
+          submit: 'Изменить',
+          cancel: 'Отмена',
+        },
+        delete: {
+          submit: 'Удалить',
+        },
+      },
+      statuses: {
+        id: 'ID',
+        name: 'Наименование',
+        createdAt: 'Дата создания',
+        options: 'Опции',
+        create: 'Создать статус',
+        new: {
+          create: 'Создать статус',
+          submit: 'Создать',
+        },
+        edit: {
+          submit: 'Изменить',
+          cancel: 'Отмена',
+        },
+        delete: {
+          submit: 'Удалить',
         },
       },
       welcome: {

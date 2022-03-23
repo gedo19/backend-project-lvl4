@@ -1,16 +1,15 @@
 // @ts-check
 
-import _ from 'lodash';
 import fastify from 'fastify';
 
 import init from '../server/plugin.js';
-import encrypt from '../server/lib/secure.js';
 import { getTestData, prepareData } from './helpers/index.js';
 
-describe('test users CRUD', () => {
+describe('test statuses CRUD', () => {
   let app;
   let knex;
   let models;
+  let cookie;
   const testData = getTestData();
 
   beforeAll(async () => {
@@ -21,49 +20,7 @@ describe('test users CRUD', () => {
 
     await knex.migrate.latest();
     await prepareData(app);
-  });
 
-  beforeEach(async () => {
-  });
-
-  it('index', async () => {
-    const response = await app.inject({
-      method: 'GET',
-      url: app.reverse('users'),
-    });
-
-    expect(response.statusCode).toBe(200);
-  });
-
-  it('new', async () => {
-    const response = await app.inject({
-      method: 'GET',
-      url: app.reverse('newUser'),
-    });
-
-    expect(response.statusCode).toBe(200);
-  });
-
-  it('create', async () => {
-    const params = testData.users.new;
-    const response = await app.inject({
-      method: 'POST',
-      url: app.reverse('postUser'),
-      payload: {
-        data: params,
-      },
-    });
-
-    expect(response.statusCode).toBe(302);
-    const expected = {
-      ..._.omit(params, 'password'),
-      passwordDigest: encrypt(params.password),
-    };
-    const user = await models.user.query().findOne({ email: params.email });
-    expect(user).toMatchObject(expected);
-  });
-
-  it('editing / deleting', async () => {
     const responseSignIn = await app.inject({
       method: 'POST',
       url: app.reverse('session'),
@@ -74,21 +31,63 @@ describe('test users CRUD', () => {
 
     const [sessionCookie] = responseSignIn.cookies;
     const { name, value } = sessionCookie;
-    const cookie = { [name]: value };
+    cookie = { [name]: value };
+  });
 
+  beforeEach(async () => {
+  });
+
+  it('index', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: app.reverse('statuses'),
+      cookies: cookie,
+    });
+
+    expect(response.statusCode).toBe(200);
+  });
+
+  it('new', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: app.reverse('newStatus'),
+      cookies: cookie,
+    });
+
+    expect(response.statusCode).toBe(200);
+  });
+
+  it('create', async () => {
+    const params = testData.statuses.new;
+    const response = await app.inject({
+      method: 'POST',
+      url: app.reverse('postStatus'),
+      cookies: cookie,
+      payload: {
+        data: params,
+      },
+    });
+
+    expect(response.statusCode).toBe(302);
+
+    const taskStatus = await models.taskStatus.query().findOne({ name: params.name });
+    expect(taskStatus).toMatchObject(params);
+  });
+
+  it('editing / deleting', async () => {
     const responseEditForm = await app.inject({
       method: 'GET',
-      url: app.reverse('editUser', { id: 2 }),
+      url: app.reverse('editStatus', { id: 1 }),
       cookies: cookie,
     });
 
     expect(responseEditForm.statusCode).toBe(200);
 
-    const params = testData.users.editing;
+    const params = testData.statuses.editing;
 
     const responseEdit = await app.inject({
       method: 'PATCH',
-      url: app.reverse('updateUser', { id: 2 }),
+      url: app.reverse('updateStatus', { id: 1 }),
       cookies: cookie,
       payload: {
         data: params,
@@ -97,16 +96,12 @@ describe('test users CRUD', () => {
 
     expect(responseEdit.statusCode).toBe(302);
 
-    const expected = {
-      ..._.omit(params, 'password'),
-      passwordDigest: encrypt(params.password),
-    };
-    const user = await models.user.query().findOne({ email: params.email });
-    expect(user).toMatchObject(expected);
+    const taskStatus = await models.taskStatus.query().findOne({ name: params.name });
+    expect(taskStatus).toMatchObject(params);
 
     const responseDelete = await app.inject({
       method: 'DELETE',
-      url: app.reverse('deleteUser', { id: 2 }),
+      url: app.reverse('deleteStatus', { id: 1 }),
       cookies: cookie,
     });
 

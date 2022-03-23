@@ -1,12 +1,31 @@
 {
   "users": {
     "new": {
+      "firstname": "root",
+      "lastname": "user",
       "email": "malika_hodkiewicz75@live.com",
       "password": "RLJvaIgPOnX5r03"
     },
     "existing": {
       "email": "lawrence.kulas87@outlook.com",
       "password": "O6AvLIQL1cbzrre"
+    },
+    "editing": {
+      "firstname": "Michael",
+      "lastname": "Kehn",
+      "email": "michael_kehn@gmail.com",
+      "password": "DJn21SDAj37"
+    }
+  },
+  "statuses": {
+    "new": {
+      "name": "In process"
+    },
+    "existing": {
+      "name": "Done"
+    },
+    "editing": {
+      "name": "Deleted"
     }
   }
 }
