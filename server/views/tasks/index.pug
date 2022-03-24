@@ -1,0 +1,31 @@
+extends ../layouts/application.pug
+
+block header
+  = t('layouts.application.tasks')
+
+block content
+  table.table.table-borderless.table-striped.mt-5.bg-white
+    thead
+      tr
+        th= t('views.users.id')
+        th= t('views.users.fullName')
+        th= t('views.users.email')
+        th= t('views.users.createdAt')
+        if isAuthenticated()
+          th= t('views.users.options')
+    tbody
+      each task in tasks
+        tr
+          td= task.id
+          td= task.name
+          td= task.status.name
+          //td= task.creator.fullName()
+          //td= task.executor.fullName()
+          td= formatDate(task.createdAt)
+          //if isAuthenticated()
+          //  td
+          //    .d-flex.flex-wrap
+          //      a(href=route('editUser', {id: user.id})).btn.btn-outline-primary.me-1= t('views.users.edit.submit')
+          //      +formFor()(action=route(`deleteUser`, {id: user.id}) method='post')
+          //        input(name="_method" type="hidden" value="DELETE")
+          //        input(type='submit' value= t('views.users.delete.submit')).btn.btn-outline-danger
