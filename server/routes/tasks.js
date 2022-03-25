@@ -8,7 +8,7 @@ export default (app) => {
       '/tasks',
       { name: 'tasks', preValidation: app.authenticate },
       async (req, reply) => {
-        const tasks = await app.objection.models.task.query().withGraphFetched('[creator, executor, status]');
+        const tasks = await app.objection.models.task.query().withGraphFetched(`[status, creator, executor]`);
         reply.render('tasks/index', { tasks });
         return reply;
       },
@@ -16,7 +16,13 @@ export default (app) => {
     .get(
       '/tasks/new',
       { name: 'newTask', preValidation: app.authenticate },
-      async (req, reply) => {},
+      async (req, reply) => {
+        const task = new app.objection.models.task();
+        const users = await app.objection.models.user.query();
+        const taskStatuses = await app.objection.models.taskStatus.query();
+        reply.render('tasks/new', { task, users, taskStatuses });
+        return reply;
+      },
     )
     .get(
       '/tasks/:id',
@@ -31,17 +37,7 @@ export default (app) => {
     .post(
       '/tasks',
       { name: 'postTask' },
-      async (req, reply) => {
-        const { data } = req.body;
-
-        try {
-          const task = await app.objection.models.task.fromJson(data);
-          await app.objection.models.task.query().insert(task);
-          return reply.send('Success');
-        } catch (e) {
-          return reply.send(e);
-        }
-      },
+      async (req, reply) => {},
     )
     .patch(
       '/tasks/:id',

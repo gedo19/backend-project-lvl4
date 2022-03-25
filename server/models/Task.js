@@ -1,6 +1,9 @@
-import BaseModel from './BaseModel.js';
+import { Model } from 'objection';
 
-export default class Task extends BaseModel {
+import User from './User.js';
+import TaskStatus from './TaskStatus.js';
+
+export default class Task extends Model {
   static get tableName() {
     return 'tasks';
   }
@@ -23,24 +26,24 @@ export default class Task extends BaseModel {
   static get relationMappings() {
     return {
       status: {
-        relation: BaseModel.BelongsToOneRelation,
-        modelClass: 'TaskStatus',
+        relation: Model.BelongsToOneRelation,
+        modelClass: TaskStatus,
         join: {
           from: 'tasks.status_id',
           to: 'statuses.id',
         },
       },
       creator: {
-        relation: BaseModel.BelongsToOneRelation,
-        modelClass: 'User',
+        relation: Model.BelongsToOneRelation,
+        modelClass: User,
         join: {
           from: 'tasks.creator_id',
           to: 'users.id',
         },
       },
       executor: {
-        relation: BaseModel.BelongsToOneRelation,
-        modelClass: 'User',
+        relation: Model.BelongsToOneRelation,
+        modelClass: User,
         join: {
           from: 'tasks.executor_id',
           to: 'users.id',

@@ -5,6 +5,40 @@ mixin formFor(entity = null)
   form&attributes(attributes)
     block
 
+mixin select(entities, propertyName, placeholder)
+  - inputId = getInputId(propertyName)
+  - classLine = 'form-control'
+  .mb-3
+    label(
+      for= inputId
+    )= placeholder
+    select(
+      id= inputId
+      name= getInputName(propertyName)
+      class= classLine
+    )
+      option
+      each entity in entities
+        option(value= entity.id)= entity.name
+
+
+mixin textarea(entity, propertyName, placeholder, errors = {})
+  - propertyErrors = _.get(errors, propertyName)
+  - classLine = 'form-control' + (_.isEmpty(propertyErrors) ? '' : ' is-invalid')
+  - inputId = getInputId(propertyName)
+  .mb-3
+    label(
+      for= inputId
+    )= placeholder
+    textarea(
+      id= inputId
+      name= getInputName(propertyName)
+      class= classLine
+      rows= "3"
+    )&attributes(attributes)= _.get(entity, propertyName, '')
+    if !_.isEmpty(propertyErrors)
+      .invalid-feedback= propertyErrors.map(({message}) => message).join('. ')
+
 mixin input(entity, propertyName, placeholder, errors = {})
   - propertyErrors = _.get(errors, propertyName)
   - classLine = 'form-control' + (_.isEmpty(propertyErrors) ? '' : ' is-invalid')

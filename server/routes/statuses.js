@@ -45,6 +45,7 @@ export default (app) => {
 
           return reply.redirect(app.reverse('statuses'));
         } catch (e) {
+          console.log(e);
           req.flash('error', i18next.t('flash.statuses.create.error'));
           reply.render('statuses/new', { taskStatus: data, errors: e.data });
           return reply;

@@ -50,6 +50,9 @@ export default {
         statuses: 'Статусы',
         createStatus: 'Создание статуса',
         editStatus: 'Изменение статуса',
+        tasks: 'Задачи',
+        createTask: 'Создание задачи',
+        editTask: 'Изменение задачи',
         signIn: 'Вход',
         signUp: 'Регистрация',
         signOut: 'Выход',
@@ -95,6 +98,28 @@ export default {
         create: 'Создать статус',
         new: {
           create: 'Создать статус',
+          submit: 'Создать',
+        },
+        edit: {
+          submit: 'Изменить',
+          cancel: 'Отмена',
+        },
+        delete: {
+          submit: 'Удалить',
+        },
+      },
+      tasks: {
+        id: 'ID',
+        name: 'Наименование',
+        description: 'Описание',
+        status: 'Статус',
+        creator: 'Автор',
+        executor: 'Исполнитель',
+        marks: 'Метки',
+        createdAt: 'Дата создания',
+        options: 'Опции',
+        new: {
+          create: 'Создать задачу',
           submit: 'Создать',
         },
         edit: {

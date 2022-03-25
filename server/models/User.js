@@ -1,13 +1,13 @@
 // @ts-check
 
 import objectionUnique from 'objection-unique';
-import BaseModel from './BaseModel.js';
-
 import encrypt from '../lib/secure.js';
+import path from 'path';
+import { Model } from 'objection';
 
 const unique = objectionUnique({ fields: ['email'] });
 
-export default class User extends unique(BaseModel) {
+export default class User extends unique(Model) {
   static get tableName() {
     return 'users';
   }
@@ -30,7 +30,7 @@ export default class User extends unique(BaseModel) {
     this.passwordDigest = encrypt(value);
   }
 
-  fullName() {
+  get name() {
     return `${this.firstname} ${this.lastname}`;
   }
 
@@ -41,16 +41,16 @@ export default class User extends unique(BaseModel) {
   static get relationMappings() {
     return {
       createdTasks: {
-        relation: BaseModel.HasManyRelation,
-        modelClass: 'Task',
+        relation: Model.HasManyRelation,
+        modelClass: path.join(__dirname, 'Task'),
         join: {
           from: 'users.id',
           to: 'tasks.creator_id',
         },
       },
       assignedTasks: {
-        relation: BaseModel.HasManyRelation,
-        modelClass: 'Task',
+        relation: Model.HasManyRelation,
+        modelClass: path.join(__dirname, 'Task'),
         join: {
           from: 'users.id',
           to: 'tasks.executor_id',
