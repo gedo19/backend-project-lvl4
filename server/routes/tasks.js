@@ -7,7 +7,7 @@ export default (app) => {
   app
     .get(
       '/tasks',
-      { name: 'tasks', preValidation: app.authenticate },
+      { name: 'tasks#index', preValidation: app.authenticate },
       async (req, reply) => {
         const {
           status: statusId,
@@ -38,7 +38,7 @@ export default (app) => {
     )
     .get(
       '/tasks/new',
-      { name: 'newTask', preValidation: app.authenticate },
+      { name: 'tasks#new', preValidation: app.authenticate },
       async (req, reply) => {
         const task = new app.objection.models.task();
         const [users, taskStatuses, taskLabels] = await Promise.all([
@@ -55,7 +55,7 @@ export default (app) => {
     )
     .get(
       '/tasks/:id',
-      { name: 'task', preValidation: app.authenticate },
+      { name: 'tasks#show', preValidation: app.authenticate },
       async (req, reply) => {
         const { id: taskId } = req.params;
         const task = await app.objection.models.task
@@ -69,7 +69,7 @@ export default (app) => {
     )
     .get(
       '/tasks/:id/edit',
-      { name: 'editTask', preValidation: app.authenticate },
+      { name: 'tasks#edit', preValidation: app.authenticate },
       async (req, reply) => {
         const { id: taskId } = req.params;
 
@@ -88,7 +88,7 @@ export default (app) => {
     )
     .post(
       '/tasks',
-      { name: 'postTask', preValidation: app.authenticate },
+      { name: 'tasks#create', preValidation: app.authenticate },
       async (req, reply) => {
         const { data } = req.body;
 
@@ -112,7 +112,7 @@ export default (app) => {
           });
 
           req.flash('info', i18next.t('flash.tasks.create.success'));
-          return reply.redirect(app.reverse('tasks'));
+          return reply.redirect(app.reverse('tasks#index'));
         } catch ({ data: errors }) {
           const [users, taskStatuses, taskLabels] = await Promise.all([
             app.objection.models.user.query(),
@@ -129,7 +129,7 @@ export default (app) => {
     )
     .patch(
       '/tasks/:id',
-      { name: 'updateTask', preValidation: app.authenticate },
+      { name: 'tasks#update', preValidation: app.authenticate },
       async (req, reply) => {
         const { id: taskId } = req.params;
         const { data } = req.body;
@@ -158,7 +158,7 @@ export default (app) => {
           });
 
           req.flash('success', i18next.t('flash.tasks.edit.success'));
-          return reply.redirect(app.reverse('tasks'));
+          return reply.redirect(app.reverse('tasks#index'));
         } catch ({ data: errors }) {
           const [taskStatuses, taskLabels, users] = await Promise.all([
             app.objection.models.taskStatus.query(),
@@ -185,7 +185,7 @@ export default (app) => {
 
         if (req.user.id !== task.creatorId) {
           req.flash('error', i18next.t('flash.tasks.delete.accessError'));
-          return reply.redirect(app.reverse('tasks'));
+          return reply.redirect(app.reverse('tasks#index'));
         }
 
         await app.objection.models.task.transaction(async (trx) => {
@@ -194,7 +194,7 @@ export default (app) => {
         });
 
         req.flash('success', i18next.t('flash.tasks.delete.success'));
-        return reply.redirect(app.reverse('tasks'));
+        return reply.redirect(app.reverse('tasks#index'));
       },
     );
 };

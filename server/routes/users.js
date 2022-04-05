@@ -5,25 +5,25 @@ import _ from 'lodash';
 
 export default (app) => {
   app
-    .get('/users', { name: 'users' }, async (req, reply) => {
+    .get('/users', { name: 'users#index' }, async (req, reply) => {
       const users = await app.objection.models.user.query();
       reply.render('users/index', { users });
       return reply;
     })
-    .get('/users/new', { name: 'newUser' }, (req, reply) => {
+    .get('/users/new', { name: 'users#new' }, (req, reply) => {
       const user = new app.objection.models.user();
       reply.render('users/new', { user });
       return reply;
     })
     .get(
       '/users/:id/edit',
-      { name: 'editUser', preValidation: app.authenticate },
+      { name: 'users#edit', preValidation: app.authenticate },
       async (req, reply) => {
         const { id: userId } = req.user;
 
         if (Number(req.params.id) !== userId) {
           req.flash('error', i18next.t('flash.users.edit.accessError'));
-          return reply.redirect(app.reverse('users'));
+          return reply.redirect(app.reverse('users#index'));
         }
 
         const user = await app.objection.models.user.query().findById(userId);
@@ -32,7 +32,7 @@ export default (app) => {
         return reply;
       },
     )
-    .post('/users', { name: 'postUser' }, async (req, reply) => {
+    .post('/users', { name: 'users#create' }, async (req, reply) => {
       const { data } = req.body;
 
       try {
@@ -48,14 +48,14 @@ export default (app) => {
     })
     .patch(
       '/users/:id',
-      { name: 'updateUser', preValidation: app.authenticate },
+      { name: 'users#update', preValidation: app.authenticate },
       async (req, reply) => {
         const { id: userId } = req.user;
         const { data } = req.body;
 
         if (Number(req.params.id) !== userId) {
           req.flash('error', i18next.t('flash.users.edit.accessError'));
-          return reply.redirect(app.reverse('users'));
+          return reply.redirect(app.reverse('users#index'));
         }
 
         const user = await app.objection.models.user.query().findById(userId);
@@ -63,7 +63,7 @@ export default (app) => {
           await user.$query().patch(data);
 
           req.flash('success', i18next.t('flash.users.edit.success'));
-          return reply.redirect(app.reverse('users'));
+          return reply.redirect(app.reverse('users#index'));
         } catch ({ data: errors }) {
           user.$set(data);
           reply.code(422).render('users/edit', { user, errors });
@@ -73,13 +73,13 @@ export default (app) => {
     )
     .delete(
       '/users/:id',
-      { name: 'deleteUser', preValidation: app.authenticate },
+      { name: 'users#destroy', preValidation: app.authenticate },
       async (req, reply) => {
         const { id: userId } = req.user;
 
         if (Number(req.params.id) !== userId) {
           req.flash('error', i18next.t('flash.users.delete.accessError'));
-          return reply.redirect(app.reverse('users'));
+          return reply.redirect(app.reverse('users#index'));
         }
 
         const user = await app.objection.models.user.query().findById(userId);
@@ -96,7 +96,7 @@ export default (app) => {
           req.flash('error', i18next.t('flash.users.delete.error'));
         }
 
-        return reply.redirect(app.reverse('users'));
+        return reply.redirect(app.reverse('users#index'));
       },
     );
 };

@@ -23,7 +23,7 @@ block content
           if isAuthenticated()
             td
               .d-flex.flex-wrap
-                a(href=route('editUser', { id: user.id })).btn.btn-outline-primary.me-1= t('views.users.edit.submit')
-                +formFor()(action=route(`deleteUser`, { id: user.id }) method='post')
+                a(href=route('users#edit', { id: user.id })).btn.btn-outline-primary.me-1= t('views.users.edit.submit')
+                +formFor()(action=route(`users#destroy`, { id: user.id }) method='post')
                   input(name="_method" type="hidden" value="DELETE")
                   input(type='submit' value= t('views.users.delete.submit')).btn.btn-outline-danger

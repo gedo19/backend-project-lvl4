@@ -28,7 +28,7 @@ describe('test users CRUD', () => {
   it('index', async () => {
     const response = await app.inject({
       method: 'GET',
-      url: app.reverse('users'),
+      url: app.reverse('users#index'),
     });
 
     expect(response.statusCode).toBe(200);
@@ -37,7 +37,7 @@ describe('test users CRUD', () => {
   it('new', async () => {
     const response = await app.inject({
       method: 'GET',
-      url: app.reverse('newUser'),
+      url: app.reverse('users#new'),
     });
 
     expect(response.statusCode).toBe(200);
@@ -50,7 +50,7 @@ describe('test users CRUD', () => {
 
     const response = await app.inject({
       method: 'GET',
-      url: app.reverse('editUser', { id }),
+      url: app.reverse('users#edit', { id }),
       cookies: cookie,
     });
 
@@ -61,7 +61,7 @@ describe('test users CRUD', () => {
     const userData = testData.users.new;
     const response = await app.inject({
       method: 'POST',
-      url: app.reverse('postUser'),
+      url: app.reverse('users#create'),
       payload: {
         data: userData,
       },
@@ -89,7 +89,7 @@ describe('test users CRUD', () => {
 
     const responseUpdate = await app.inject({
       method: 'PATCH',
-      url: app.reverse('updateUser', { id }),
+      url: app.reverse('users#update', { id }),
       payload: {
         data: newUserData,
       },
@@ -115,7 +115,7 @@ describe('test users CRUD', () => {
 
     const responseDelete = await app.inject({
       method: 'DELETE',
-      url: app.reverse('deleteUser', { id }),
+      url: app.reverse('users#destroy', { id }),
       cookies: cookie,
     });
 

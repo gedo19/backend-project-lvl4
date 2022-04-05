@@ -7,7 +7,7 @@ export default (app) => {
   app
     .get(
       '/statuses',
-      { name: 'statuses', preValidation: app.authenticate },
+      { name: 'statuses#index', preValidation: app.authenticate },
       async (req, reply) => {
         const taskStatuses = await app.objection.models.taskStatus.query();
         reply.render('statuses/index', { taskStatuses });
@@ -16,7 +16,7 @@ export default (app) => {
     )
     .get(
       '/statuses/new',
-      { name: 'newStatus', preValidation: app.authenticate },
+      { name: 'statuses#new', preValidation: app.authenticate },
       async (req, reply) => {
         const taskStatus = new app.objection.models.taskStatus();
         reply.render('statuses/new', { taskStatus });
@@ -25,7 +25,7 @@ export default (app) => {
     )
     .get(
       '/statuses/:id/edit',
-      { name: 'editStatus', preValidation: app.authenticate },
+      { name: 'statuses#edit', preValidation: app.authenticate },
       async (req, reply) => {
         const { id } = req.params;
 
@@ -36,7 +36,7 @@ export default (app) => {
     )
     .post(
       '/statuses',
-      { name: 'postStatus', preValidation: app.authenticate },
+      { name: 'statuses#create', preValidation: app.authenticate },
       async (req, reply) => {
         const { data } = req.body;
 
@@ -44,7 +44,7 @@ export default (app) => {
           await app.objection.models.taskStatus.query().insert(data);
 
           req.flash('success', i18next.t('flash.statuses.create.success'));
-          return reply.redirect(app.reverse('statuses'));
+          return reply.redirect(app.reverse('statuses#index'));
         } catch ({ data: errors }) {
           req.flash('error', i18next.t('flash.statuses.create.error'));
           reply.code(422).render('statuses/new', { taskStatus: data, errors });
@@ -54,7 +54,7 @@ export default (app) => {
     )
     .patch(
       '/statuses/:id',
-      { name: 'updateStatus', preValidation: app.authenticate },
+      { name: 'statuses#update', preValidation: app.authenticate },
       async (req, reply) => {
         const { id } = req.params;
         const { data } = req.body;
@@ -64,7 +64,7 @@ export default (app) => {
           await taskStatus.$query().patch(data);
 
           req.flash('success', i18next.t('flash.statuses.edit.success'));
-          return reply.redirect(app.reverse('statuses'));
+          return reply.redirect(app.reverse('statuses#index'));
         } catch ({ data: errors }) {
           taskStatus.$set(data);
 
@@ -76,7 +76,7 @@ export default (app) => {
     )
     .delete(
       '/statuses/:id',
-      { name: 'deleteStatus', preValidation: app.authenticate },
+      { name: 'statuses#destroy', preValidation: app.authenticate },
       async (req, reply) => {
         const { id } = req.params;
         const taskStatus = await app.objection.models.taskStatus.query().findById(id);
@@ -89,7 +89,7 @@ export default (app) => {
           req.flash('error', i18next.t('flash.statuses.delete.error'));
         }
 
-        return reply.redirect(app.reverse('statuses'));
+        return reply.redirect(app.reverse('statuses#index'));
       },
     );
 };

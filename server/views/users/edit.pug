@@ -4,11 +4,11 @@ block header
   = t('layouts.application.editUser')
 
 block content
-  +formFor()(action=route(`updateUser`, { id: user.id }) method='post').mb-3
+  +formFor()(action=route(`users#update`, { id: user.id }) method='post').mb-3
     +input(user, 'firstname', t('views.placeholders.firstname'), errors)(type='text')
     +input(user, 'lastname', t('views.placeholders.lastname'), errors)(type='text')
     +input(user, 'email', t('views.placeholders.email'),  errors)(type='email')
     +input(user, 'password', t('views.placeholders.password'), errors)(type='password')
     input(name="_method" type="hidden" value="PATCH")
     +submit(user)(value=t('views.users.edit.submit'))
-    a.btn.btn-outline-secondary.ms-2(href=route('users'))= t('views.users.edit.cancel')
+    a.btn.btn-outline-secondary.ms-2(href=route('users#index'))= t('views.users.edit.cancel')

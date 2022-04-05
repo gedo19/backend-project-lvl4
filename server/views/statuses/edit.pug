@@ -4,8 +4,8 @@ block header
   = t('layouts.application.editStatus')
 
 block content
-  +formFor()(action=route(`updateStatus`, { id: taskStatus.id }) method='post').mb-3
+  +formFor()(action=route(`statuses#update`, { id: taskStatus.id }) method='post').mb-3
     +input(taskStatus, 'name', t('views.placeholders.name'), errors)(type='text')
     input(name="_method" type="hidden" value="PATCH")
     +submit(taskStatus)(value=t('views.statuses.edit.submit'))
-    a.btn.btn-outline-secondary.ms-2(href=route('statuses'))= t('views.statuses.edit.cancel')
+    a.btn.btn-outline-secondary.ms-2(href=route('statuses#index'))= t('views.statuses.edit.cancel')

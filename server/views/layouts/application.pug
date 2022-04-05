@@ -16,12 +16,12 @@ html(lang="ru")
         #navbarToggleExternalContent.collapse.navbar-collapse
           ul.navbar-nav.justify-content-end.w-100
             li.nav-item.me-auto
-              a.nav-link(href=route('users'))= t('layouts.application.users')
+              a.nav-link(href=route('users#index'))= t('layouts.application.users')
             if isAuthenticated()
               li.nav-item
-                a.nav-link(href=route('statuses'))= t('layouts.application.statuses')
+                a.nav-link(href=route('statuses#index'))= t('layouts.application.statuses')
               li.nav-item
-                a.nav-link(href=route('tasks'))= t('layouts.application.tasks')
+                a.nav-link(href=route('tasks#index'))= t('layouts.application.tasks')
               li.nav-item
                 a.nav-link(href=route('labels#index'))= t('layouts.application.labels')
               li.nav-item
@@ -30,7 +30,7 @@ html(lang="ru")
               li.nav-item
                 a.nav-link(href=route('session#index'))= t('layouts.application.signIn')
               li.nav-item
-                a.nav-link(href=route('newUser'))= t('layouts.application.signUp')
+                a.nav-link(href=route('users#new'))= t('layouts.application.signUp')
     .container.wrapper.flex-grow-1
 
       each messages, type in reply.flash() || []

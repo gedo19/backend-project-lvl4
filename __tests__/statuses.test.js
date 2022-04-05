@@ -29,7 +29,7 @@ describe('test statuses CRUD', () => {
   it('index', async () => {
     const response = await app.inject({
       method: 'GET',
-      url: app.reverse('statuses'),
+      url: app.reverse('statuses#index'),
       cookies: cookie,
     });
 
@@ -39,7 +39,7 @@ describe('test statuses CRUD', () => {
   it('new', async () => {
     const response = await app.inject({
       method: 'GET',
-      url: app.reverse('newStatus'),
+      url: app.reverse('statuses#new'),
       cookies: cookie,
     });
 
@@ -52,7 +52,7 @@ describe('test statuses CRUD', () => {
 
     const responseEditForm = await app.inject({
       method: 'GET',
-      url: app.reverse('editStatus', { id }),
+      url: app.reverse('statuses#edit', { id }),
       cookies: cookie,
     });
 
@@ -64,7 +64,7 @@ describe('test statuses CRUD', () => {
 
     const response = await app.inject({
       method: 'POST',
-      url: app.reverse('postStatus'),
+      url: app.reverse('statuses#create'),
       payload: {
         data: statusData,
       },
@@ -87,7 +87,7 @@ describe('test statuses CRUD', () => {
 
     const responseUpdate = await app.inject({
       method: 'PATCH',
-      url: app.reverse('updateStatus', { id }),
+      url: app.reverse('statuses#update', { id }),
       payload: {
         data: newStatusData,
       },
@@ -106,7 +106,7 @@ describe('test statuses CRUD', () => {
 
     const responseDelete = await app.inject({
       method: 'DELETE',
-      url: app.reverse('deleteStatus', { id }),
+      url: app.reverse('statuses#destroy', { id }),
       cookies: cookie,
     });
 

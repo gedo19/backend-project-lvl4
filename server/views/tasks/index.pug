@@ -4,10 +4,10 @@ block header
   = t('layouts.application.tasks')
 
 block content
-  a(href=route('newTask')).btn.btn-primary.mb-5= t('views.tasks.new.create')
+  a(href=route('tasks#new')).btn.btn-primary.mb-5= t('views.tasks.new.create')
   .card.shadow-sm
     .card-body.p-4
-      +formFor()(action=route('tasks') method='get')
+      +formFor()(action=route('tasks#index') method='get')
         .row
           .col-12.col-md
             +fSelect('status', t('views.tasks.creator'), taskStatuses, filterCriterias)
@@ -32,14 +32,14 @@ block content
         tr
           td= task.id
           td
-            a(href=route('task', { id: task.id }))= task.name
+            a(href=route('tasks#show', { id: task.id }))= task.name
           td= task.status.name
           td= task.creator.name
           td= _.get(task.executor, 'name')
           td= formatDate(task.createdAt)
           td
             .d-flex.flex-wrap
-              a(href=route('editTask', { id: task.id })).btn.btn-outline-primary.me-1= t('views.tasks.edit.submit')
+              a(href=route('tasks#edit', { id: task.id })).btn.btn-outline-primary.me-1= t('views.tasks.edit.submit')
               +formFor()(action=route(`tasks#destroy`, {id: task.id}) method='post')
                 input(name="_method" type="hidden" value="DELETE")
                 input(type='submit' value= t('views.tasks.delete.submit')).btn.btn-outline-danger

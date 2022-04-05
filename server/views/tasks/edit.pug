@@ -4,7 +4,7 @@ block header
   = t('layouts.application.editTask')
 
 block content
-  +formFor()(action=route(`updateTask`, { id: task.id }) method='post').mb-3
+  +formFor()(action=route(`tasks#update`, { id: task.id }) method='post').mb-3
     +input(task, 'name', t('views.placeholders.name'), errors)(type='text')
     +textarea(task, 'description', t('views.tasks.description'), errors)
     +select(task, 'statusId', t('views.tasks.status'), errors, taskStatuses)
@@ -12,4 +12,4 @@ block content
     +select(task, 'labels', t('views.tasks.labels'), errors, taskLabels)(multiple='multiple')
     input(name="_method" type="hidden" value="PATCH")
     +submit(task)(value=t('views.tasks.edit.submit'))
-    a.btn.btn-outline-secondary.ms-2(href=route('tasks'))= t('views.tasks.edit.cancel')
+    a.btn.btn-outline-secondary.ms-2(href=route('tasks#index'))= t('views.tasks.edit.cancel')

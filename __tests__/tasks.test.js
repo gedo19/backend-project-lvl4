@@ -29,7 +29,7 @@ describe('test tasks CRUD', () => {
   it('index', async () => {
     const response = await app.inject({
       method: 'GET',
-      url: app.reverse('tasks'),
+      url: app.reverse('tasks#index'),
       cookies: cookie,
     });
 
@@ -42,7 +42,7 @@ describe('test tasks CRUD', () => {
 
     const response = await app.inject({
       method: 'GET',
-      url: app.reverse('task', { id }),
+      url: app.reverse('tasks#show', { id }),
       cookies: cookie,
     });
 
@@ -52,7 +52,7 @@ describe('test tasks CRUD', () => {
   it('new', async () => {
     const response = await app.inject({
       method: 'GET',
-      url: app.reverse('newTask'),
+      url: app.reverse('tasks#new'),
       cookies: cookie,
     });
 
@@ -60,9 +60,12 @@ describe('test tasks CRUD', () => {
   });
 
   it('edit', async () => {
+    const { name } = testData.tasks.existing;
+    const { id } = await models.task.query().findOne({ name });
+
     const response = await app.inject({
       method: 'GET',
-      url: app.reverse('newTask'),
+      url: app.reverse('tasks#edit', { id }),
       cookies: cookie,
     });
 
@@ -73,7 +76,7 @@ describe('test tasks CRUD', () => {
     const taskData = testData.tasks.new;
     const response = await app.inject({
       method: 'POST',
-      url: app.reverse('postTask'),
+      url: app.reverse('tasks#create'),
       payload: {
         data: taskData,
       },
@@ -95,7 +98,7 @@ describe('test tasks CRUD', () => {
 
     const responseUpdate = await app.inject({
       method: 'PATCH',
-      url: app.reverse('updateTask', { id }),
+      url: app.reverse('tasks#update', { id }),
       payload: {
         data: newTaskData,
       },
