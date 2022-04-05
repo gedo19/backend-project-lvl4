@@ -18,7 +18,7 @@ describe('requests', () => {
   it('GET 200', async () => {
     const res = await app.inject({
       method: 'GET',
-      url: app.reverse(':root'),
+      url: app.reverse('root#index'),
     });
     expect(res.statusCode).toBe(200);
   });
