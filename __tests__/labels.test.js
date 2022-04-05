@@ -5,7 +5,7 @@ import fastify from 'fastify';
 import init from '../server/plugin.js';
 import { authorize, getTestData, prepareData } from './helpers/index.js';
 
-describe('test statuses CRUD', () => {
+describe('test labels CRUD', () => {
   let app;
   let knex;
   let models;
@@ -17,7 +17,6 @@ describe('test statuses CRUD', () => {
     await init(app);
     knex = app.objection.knex;
     models = app.objection.models;
-
     await knex.migrate.latest();
   });
 
@@ -29,7 +28,7 @@ describe('test statuses CRUD', () => {
   it('index', async () => {
     const response = await app.inject({
       method: 'GET',
-      url: app.reverse('statuses'),
+      url: app.reverse('labels'),
       cookies: cookie,
     });
 
@@ -39,7 +38,7 @@ describe('test statuses CRUD', () => {
   it('new', async () => {
     const response = await app.inject({
       method: 'GET',
-      url: app.reverse('newStatus'),
+      url: app.reverse('newLabel'),
       cookies: cookie,
     });
 
@@ -47,77 +46,75 @@ describe('test statuses CRUD', () => {
   });
 
   it('edit', async () => {
-    const { name } = testData.statuses.existing;
-    const { id } = await models.taskStatus.query().findOne({ name });
+    const { name } = testData.labels.existing;
+    const { id } = await models.taskLabel.query().findOne({ name });
 
-    const responseEditForm = await app.inject({
+    const response = await app.inject({
       method: 'GET',
-      url: app.reverse('editStatus', { id }),
+      url: app.reverse('editLabel', { id }),
       cookies: cookie,
     });
 
-    expect(responseEditForm.statusCode).toBe(200);
+    expect(response.statusCode).toBe(200);
   });
 
   it('create', async () => {
-    const statusData = testData.statuses.new;
-
+    const labelData = testData.labels.new;
     const response = await app.inject({
       method: 'POST',
-      url: app.reverse('postStatus'),
+      url: app.reverse('postLabel'),
       payload: {
-        data: statusData,
+        data: labelData,
       },
       cookies: cookie,
     });
 
     expect(response.statusCode).toBe(302);
-
-    await expect(models.taskStatus.query().findOne({ name: statusData.name }))
+    await expect(models.taskLabel.query().findOne({ name: labelData.name }))
       .resolves
-      .toMatchObject(statusData);
+      .toMatchObject(labelData);
   });
 
   it('patch', async () => {
     const {
-      existing: statusData,
-      editing: newStatusData,
-    } = testData.statuses;
-    const { id } = await models.taskStatus.query().findOne({ name: statusData.name });
+      existing: labelData,
+      editing: newLabelData,
+    } = testData.labels;
+    const { id } = await models.taskLabel.query().findOne({ name: labelData.name });
 
     const responseUpdate = await app.inject({
       method: 'PATCH',
-      url: app.reverse('updateStatus', { id }),
+      url: app.reverse('updateLabel', { id }),
       payload: {
-        data: newStatusData,
+        data: newLabelData,
       },
       cookies: cookie,
     });
 
     expect(responseUpdate.statusCode).toBe(302);
-    await expect(models.taskStatus.query().findById(id))
+    await expect(models.taskLabel.query().findById(id))
       .resolves
-      .toMatchObject(newStatusData);
+      .toMatchObject(newLabelData);
   });
 
   it('delete', async () => {
-    const { name } = testData.statuses.existing;
-    const { id } = await models.taskStatus.query().findOne({ name });
+    const { name } = testData.labels.existing;
+    const { id } = await models.taskLabel.query().findOne({ name });
 
     const responseDelete = await app.inject({
       method: 'DELETE',
-      url: app.reverse('deleteStatus', { id }),
+      url: app.reverse('deleteLabel', { id }),
       cookies: cookie,
     });
 
     expect(responseDelete.statusCode).toBe(302);
-    await expect(models.taskStatus.query().findById(id))
+    await expect(models.taskLabel.query().findById(id))
       .resolves
       .toBeFalsy();
   });
 
   afterEach(async () => {
-    await knex('statuses').truncate();
+    knex('labels').truncate();
   });
 
   afterAll(async () => {

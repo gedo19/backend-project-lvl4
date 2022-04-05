@@ -5,12 +5,12 @@
    "description": "Node.js task manager",
    "main": "server/plugin.js",
    "engines": {
-      "node": "~16"
+      "node": ">=16.x"
    },
    "scripts": {
       "test": "jest --verbose",
       "build-frontend": "webpack",
-      "start": "fastify start server/plugin.js -l info -P",
+      "start": "fastify start server/plugin.js -l debug -P",
       "build": "webpack --config webpack.config.js"
    },
    "jest": {
@@ -49,19 +49,18 @@
       "fastify-static": "^4.6.1",
       "i18next": "^21.6.14",
       "jquery": "^3.6.0",
-      "knex": "^1.0.4",
+      "knex": "^0.95.15",
       "lodash": "^4.17.21",
-      "mini-css-extract-plugin": "^2.6.0",
       "npm-check-updates": "^12.5.4",
       "objection": "^3.0.1",
       "objection-unique": "^1.2.2",
       "pg": "^8.7.3",
       "pg-hstore": "^2.3.4",
       "pino-pretty": "^7.6.0",
-      "point-of-view": "^4.7.0",
+      "point-of-view": "^5.2.0",
       "pug": "^3.0.2",
       "qs": "^6.10.3",
-      "sass": "^1.49.9",
+      "rollbar": "^2.24.1",
       "sqlite3": "^5.0.2",
       "webpack": "^5.70.0"
    },
@@ -72,15 +71,17 @@
       "autoprefixer": "^10.4.4",
       "css-loader": "^6.7.1",
       "dotenv": "^16.0.0",
-      "eslint": "^8.11.0",
+      "eslint": "^8.12.0",
       "eslint-config-airbnb-base": "^15.0.0",
       "eslint-plugin-import": "^2.25.4",
       "eslint-plugin-jest": "^26.1.3",
       "jest": "^27.5.1",
       "jest-cli": "^27.5.1",
+      "mini-css-extract-plugin": "^2.6.0",
       "nodemon": "^2.0.15",
       "postcss": "^8.4.12",
       "postcss-loader": "^6.2.1",
+      "sass": "^1.49.11",
       "sass-loader": "^12.6.0",
       "style-loader": "^3.3.1",
       "webpack-cli": "^4.9.2"

@@ -1,4 +1,7 @@
+// @ts-check
+
 import i18next from 'i18next';
+import _ from 'lodash';
 
 export default (app) => {
   app
@@ -26,8 +29,6 @@ export default (app) => {
       async (req, reply) => {
         const { id } = req.params;
 
-        // TODO: сделать проверку ну существование
-
         const taskStatus = await app.objection.models.taskStatus.query().findById(id);
         reply.render('statuses/edit', { taskStatus });
         return reply;
@@ -40,14 +41,13 @@ export default (app) => {
         const { data } = req.body;
 
         try {
-          const taskStatus = await app.objection.models.taskStatus.fromJson(data);
-          await app.objection.models.taskStatus.query().insert(taskStatus);
+          await app.objection.models.taskStatus.query().insert(data);
 
+          req.flash('success', i18next.t('flash.statuses.create.success'));
           return reply.redirect(app.reverse('statuses'));
-        } catch (e) {
-          console.log(e);
+        } catch ({ data: errors }) {
           req.flash('error', i18next.t('flash.statuses.create.error'));
-          reply.render('statuses/new', { taskStatus: data, errors: e.data });
+          reply.code(422).render('statuses/new', { taskStatus: data, errors });
           return reply;
         }
       },
@@ -65,9 +65,11 @@ export default (app) => {
 
           req.flash('success', i18next.t('flash.statuses.edit.success'));
           return reply.redirect(app.reverse('statuses'));
-        } catch (e) {
+        } catch ({ data: errors }) {
           taskStatus.$set(data);
-          reply.render('statuses/edit', { taskStatus, errors: e.data });
+
+          req.flash('error', i18next.t('flash.statuses.edit.error'));
+          reply.render('statuses/edit', { taskStatus, errors });
           return reply;
         }
       },
@@ -77,9 +79,16 @@ export default (app) => {
       { name: 'deleteStatus', preValidation: app.authenticate },
       async (req, reply) => {
         const { id } = req.params;
+        const taskStatus = await app.objection.models.taskStatus.query().findById(id);
+        const tasks = await taskStatus.$relatedQuery('tasks');
 
-        await app.objection.models.taskStatus.query().deleteById(id);
-        req.flash('success', i18next.t('flash.statuses.delete.success'));
+        if (_.isEmpty(tasks)) {
+          await taskStatus.$query().deleteById(id);
+          req.flash('success', i18next.t('flash.statuses.delete.success'));
+        } else {
+          req.flash('error', i18next.t('flash.statuses.delete.error'));
+        }
+
         return reply.redirect(app.reverse('statuses'));
       },
     );

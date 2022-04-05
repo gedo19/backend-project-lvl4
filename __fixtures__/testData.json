@@ -10,6 +10,10 @@
       "email": "lawrence.kulas87@outlook.com",
       "password": "O6AvLIQL1cbzrre"
     },
+    "deleting": {
+      "email": "elbert_abshire52@gmail.com",
+      "password": "2123dsa12dsaDS2"
+    },
     "editing": {
       "firstname": "Michael",
       "lastname": "Kehn",
@@ -22,10 +26,42 @@
       "name": "In process"
     },
     "existing": {
-      "name": "Done"
+      "name": "Canceled"
     },
     "editing": {
       "name": "Deleted"
+    }
+  },
+  "tasks": {
+    "new": {
+      "name": "Refactor users CRUD",
+      "description": "Refactor and do all TODOs",
+      "statusId": 1,
+      "executorId": 1
+    },
+    "existing": {
+      "name": "Refactor tasks CRUD",
+      "description": "Refactor and do all TODOs",
+      "statusId": 1,
+      "creatorId": 2,
+      "executorId": 2
+    },
+    "editing": {
+      "name": "Refactor tasks CRUD",
+      "description": "Refactor and do all TODOs, and make code better",
+      "statusId": 1,
+      "executorId": 1
+    }
+  },
+  "labels": {
+    "new": {
+      "name": "Skip"
+    },
+    "existing": {
+      "name": "Critical"
+    },
+    "editing": {
+      "name": "Clear"
     }
   }
 }

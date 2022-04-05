@@ -1,13 +1,12 @@
 // @ts-check
 
-import objectionUnique from 'objection-unique';
-import encrypt from '../lib/secure.js';
-import path from 'path';
-import { Model } from 'objection';
+const objectionUnique = require('objection-unique');
+const encrypt = require('../lib/secure.cjs')
+const BaseModel = require('./BaseModel.cjs');
 
 const unique = objectionUnique({ fields: ['email'] });
 
-export default class User extends unique(Model) {
+module.exports = class User extends unique(BaseModel) {
   static get tableName() {
     return 'users';
   }
@@ -20,7 +19,7 @@ export default class User extends unique(Model) {
         id: { type: 'integer' },
         firstname: { type: 'string', minLength: 1 },
         lastname: { type: 'string', minLength: 1 },
-        email: { type: 'string' },
+        email: { type: 'string', minLength: 1 },
         password: { type: 'string', minLength: 3 },
       },
     };
@@ -41,16 +40,16 @@ export default class User extends unique(Model) {
   static get relationMappings() {
     return {
       createdTasks: {
-        relation: Model.HasManyRelation,
-        modelClass: path.join(__dirname, 'Task'),
+        relation: BaseModel.HasManyRelation,
+        modelClass: 'Task.cjs',
         join: {
           from: 'users.id',
           to: 'tasks.creator_id',
         },
       },
       assignedTasks: {
-        relation: Model.HasManyRelation,
-        modelClass: path.join(__dirname, 'Task'),
+        relation: BaseModel.HasManyRelation,
+        modelClass: 'Task.cjs',
         join: {
           from: 'users.id',
           to: 'tasks.executor_id',

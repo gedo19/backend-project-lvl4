@@ -5,10 +5,28 @@ mixin formFor(entity = null)
   form&attributes(attributes)
     block
 
-mixin select(entities, propertyName, placeholder)
+
+mixin fSelect(propertyName, label, options, filterCriterias)
+  -inputId= getInputId(propertyName)
+  .input-group.mb-3
+    label(
+      for= inputId
+    ).input-group-text= label
+    select(
+      id= inputId
+      name= propertyName
+    ).form-select
+      option
+      for option in options
+        - isSelected = option.id===Number(filterCriterias[propertyName])
+        option(value= option.id selected= isSelected)= option.name
+
+
+mixin select(entity, propertyName, placeholder, errors = {}, options)
+  - propertyErrors = _.get(errors, propertyName)
   - inputId = getInputId(propertyName)
-  - classLine = 'form-control'
-  .mb-3
+  - classLine = 'form-control' + (_.isEmpty(propertyErrors) ? '' : ' is-invalid')
+  .mb-3(class=(errors[propertyName] && 'has-danger'))
     label(
       for= inputId
     )= placeholder
@@ -16,17 +34,23 @@ mixin select(entities, propertyName, placeholder)
       id= inputId
       name= getInputName(propertyName)
       class= classLine
-    )
-      option
-      each entity in entities
-        option(value= entity.id)= entity.name
-
+    )&attributes(attributes)
+      if attributes.multiple
+        - selectedIds = _.get(entity, 'labels', []).map(({ id }) => id)
+      else
+        - selectedIds = [entity[propertyName]]
+        option
+      each option in options
+        - isSelected = selectedIds.includes(option.id)
+        option(value= option.id selected= isSelected)= option.name
+    if !_.isEmpty(propertyErrors)
+      .invalid-feedback= propertyErrors.map(({message}) => message).join('. ')
 
 mixin textarea(entity, propertyName, placeholder, errors = {})
   - propertyErrors = _.get(errors, propertyName)
   - classLine = 'form-control' + (_.isEmpty(propertyErrors) ? '' : ' is-invalid')
   - inputId = getInputId(propertyName)
-  .mb-3
+  .mb-3(class=(errors[propertyName] && 'has-danger'))
     label(
       for= inputId
     )= placeholder
@@ -50,13 +74,25 @@ mixin input(entity, propertyName, placeholder, errors = {})
       class=classLine
       value=_.get(entity, propertyName, '')
       placeholder= placeholder
-      required
     )&attributes(attributes)
     label(
       for= inputId
     )= placeholder
     if !_.isEmpty(propertyErrors)
       .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
+
+mixin checkbox(propertyName, label, filterCriterias)
+  - inputId = getInputId(propertyName)
+  .mb-3.form-check
+    input.form-check-input(
+      id= inputId
+      name= propertyName
+      type= 'checkbox'
+      checked= filterCriterias[propertyName]
+    )
+    label.form-check-label(
+      for= inputId
+    )= label
 
 mixin submit(form = null)
   input.btn.btn-outline-primary(type='submit')&attributes(attributes)

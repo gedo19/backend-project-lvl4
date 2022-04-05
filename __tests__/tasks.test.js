@@ -5,7 +5,7 @@ import fastify from 'fastify';
 import init from '../server/plugin.js';
 import { authorize, getTestData, prepareData } from './helpers/index.js';
 
-describe('test statuses CRUD', () => {
+describe('test tasks CRUD', () => {
   let app;
   let knex;
   let models;
@@ -29,7 +29,20 @@ describe('test statuses CRUD', () => {
   it('index', async () => {
     const response = await app.inject({
       method: 'GET',
-      url: app.reverse('statuses'),
+      url: app.reverse('tasks'),
+      cookies: cookie,
+    });
+
+    expect(response.statusCode).toBe(200);
+  });
+
+  it('task', async () => {
+    const taskData = testData.tasks.existing;
+    const { id } = await models.task.query().findOne({ name: taskData.name });
+
+    const response = await app.inject({
+      method: 'GET',
+      url: app.reverse('task', { id }),
       cookies: cookie,
     });
 
@@ -39,7 +52,7 @@ describe('test statuses CRUD', () => {
   it('new', async () => {
     const response = await app.inject({
       method: 'GET',
-      url: app.reverse('newStatus'),
+      url: app.reverse('newTask'),
       cookies: cookie,
     });
 
@@ -47,77 +60,72 @@ describe('test statuses CRUD', () => {
   });
 
   it('edit', async () => {
-    const { name } = testData.statuses.existing;
-    const { id } = await models.taskStatus.query().findOne({ name });
-
-    const responseEditForm = await app.inject({
+    const response = await app.inject({
       method: 'GET',
-      url: app.reverse('editStatus', { id }),
+      url: app.reverse('newTask'),
       cookies: cookie,
     });
 
-    expect(responseEditForm.statusCode).toBe(200);
+    expect(response.statusCode).toBe(200);
   });
 
   it('create', async () => {
-    const statusData = testData.statuses.new;
-
+    const taskData = testData.tasks.new;
     const response = await app.inject({
       method: 'POST',
-      url: app.reverse('postStatus'),
+      url: app.reverse('postTask'),
       payload: {
-        data: statusData,
+        data: taskData,
       },
       cookies: cookie,
     });
 
     expect(response.statusCode).toBe(302);
-
-    await expect(models.taskStatus.query().findOne({ name: statusData.name }))
+    await expect(models.task.query().findOne({ name: taskData.name }))
       .resolves
-      .toMatchObject(statusData);
+      .toMatchObject(taskData);
   });
 
   it('patch', async () => {
     const {
-      existing: statusData,
-      editing: newStatusData,
-    } = testData.statuses;
-    const { id } = await models.taskStatus.query().findOne({ name: statusData.name });
+      existing: taskData,
+      editing: newTaskData,
+    } = testData.tasks;
+    const { id } = await models.task.query().findOne({ name: taskData.name });
 
     const responseUpdate = await app.inject({
       method: 'PATCH',
-      url: app.reverse('updateStatus', { id }),
+      url: app.reverse('updateTask', { id }),
       payload: {
-        data: newStatusData,
+        data: newTaskData,
       },
       cookies: cookie,
     });
 
     expect(responseUpdate.statusCode).toBe(302);
-    await expect(models.taskStatus.query().findById(id))
+    await expect(models.task.query().findById(id))
       .resolves
-      .toMatchObject(newStatusData);
+      .toMatchObject(newTaskData);
   });
 
   it('delete', async () => {
-    const { name } = testData.statuses.existing;
-    const { id } = await models.taskStatus.query().findOne({ name });
+    const { name } = testData.tasks.existing;
+    const { id } = await models.task.query().findOne({ name });
 
     const responseDelete = await app.inject({
       method: 'DELETE',
-      url: app.reverse('deleteStatus', { id }),
+      url: app.reverse('deleteTask', { id }),
       cookies: cookie,
     });
 
     expect(responseDelete.statusCode).toBe(302);
-    await expect(models.taskStatus.query().findById(id))
+    await expect(models.task.query().findById(id))
       .resolves
       .toBeFalsy();
   });
 
   afterEach(async () => {
-    await knex('statuses').truncate();
+    await knex('tasks').truncate();
   });
 
   afterAll(async () => {

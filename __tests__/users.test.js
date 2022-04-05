@@ -4,8 +4,8 @@ import _ from 'lodash';
 import fastify from 'fastify';
 
 import init from '../server/plugin.js';
-import encrypt from '../server/lib/secure.js';
-import { getTestData, prepareData } from './helpers/index.js';
+import encrypt from '../server/lib/secure.cjs';
+import { authorize, getTestData, prepareData } from './helpers/index.js';
 
 describe('test users CRUD', () => {
   let app;
@@ -18,12 +18,11 @@ describe('test users CRUD', () => {
     await init(app);
     knex = app.objection.knex;
     models = app.objection.models;
-
     await knex.migrate.latest();
-    await prepareData(app);
   });
 
   beforeEach(async () => {
+    await prepareData(app);
   });
 
   it('index', async () => {
@@ -44,81 +43,90 @@ describe('test users CRUD', () => {
     expect(response.statusCode).toBe(200);
   });
 
+  it('edit', async () => {
+    const userData = testData.users.existing;
+    const cookie = await authorize(app, userData);
+    const { id } = await models.user.query().findOne({ email: userData.email });
+
+    const response = await app.inject({
+      method: 'GET',
+      url: app.reverse('editUser', { id }),
+      cookies: cookie,
+    });
+
+    expect(response.statusCode).toBe(200);
+  });
+
   it('create', async () => {
-    const params = testData.users.new;
+    const userData = testData.users.new;
     const response = await app.inject({
       method: 'POST',
       url: app.reverse('postUser'),
       payload: {
-        data: params,
+        data: userData,
       },
     });
 
     expect(response.statusCode).toBe(302);
     const expected = {
-      ..._.omit(params, 'password'),
-      passwordDigest: encrypt(params.password),
+      ..._.omit(userData, 'password'),
+      passwordDigest: encrypt(userData.password),
     };
-    const user = await models.user.query().findOne({ email: params.email });
-    expect(user).toMatchObject(expected);
+
+    await expect(models.user.query().findOne({ email: userData.email }))
+      .resolves
+      .toMatchObject(expected);
   });
 
-  it('editing / deleting', async () => {
-    const responseSignIn = await app.inject({
-      method: 'POST',
-      url: app.reverse('session'),
-      payload: {
-        data: testData.users.existing,
-      },
-    });
+  it('patch', async () => {
+    const {
+      existing: userData,
+      editing: newUserData,
+    } = testData.users;
 
-    const [sessionCookie] = responseSignIn.cookies;
-    const { name, value } = sessionCookie;
-    const cookie = { [name]: value };
+    const cookie = await authorize(app, userData);
+    const { id } = await models.user.query().findOne({ email: userData.email });
 
-    const responseEditForm = await app.inject({
-      method: 'GET',
-      url: app.reverse('editUser', { id: 2 }),
-      cookies: cookie,
-    });
-
-    expect(responseEditForm.statusCode).toBe(200);
-
-    const params = testData.users.editing;
-
-    const responseEdit = await app.inject({
+    const responseUpdate = await app.inject({
       method: 'PATCH',
-      url: app.reverse('updateUser', { id: 2 }),
-      cookies: cookie,
+      url: app.reverse('updateUser', { id }),
       payload: {
-        data: params,
+        data: newUserData,
       },
+      cookies: cookie,
     });
 
-    expect(responseEdit.statusCode).toBe(302);
+    expect(responseUpdate.statusCode).toBe(302);
 
     const expected = {
-      ..._.omit(params, 'password'),
-      passwordDigest: encrypt(params.password),
+      ..._.omit(newUserData, 'password'),
+      passwordDigest: encrypt(newUserData.password),
     };
-    const user = await models.user.query().findOne({ email: params.email });
-    expect(user).toMatchObject(expected);
+
+    await expect(models.user.query().findById(id))
+      .resolves
+      .toMatchObject(expected);
+  });
+
+  it('delete', async () => {
+    const userData = testData.users.deleting;
+    const cookie = await authorize(app, userData);
+    const { id } = await models.user.query().findOne({ email: userData.email });
 
     const responseDelete = await app.inject({
       method: 'DELETE',
-      url: app.reverse('deleteUser', { id: 2 }),
+      url: app.reverse('deleteUser', { id }),
       cookies: cookie,
     });
 
     expect(responseDelete.statusCode).toBe(302);
-
-    // TODO: сделать тесты без аутентификации и авторизации
+    await expect(models.user.query().findById(id))
+      .resolves
+      .toBeFalsy();
   });
 
   afterEach(async () => {
-    // Пока Segmentation fault: 11
-    // после каждого теста откатываем миграции
-    // await knex.migrate.rollback();
+    await knex('users').truncate();
   });
 
   afterAll(async () => {

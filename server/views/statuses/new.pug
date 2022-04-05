@@ -7,4 +7,3 @@ block content
   +formFor()(action=route(`postStatus`) method='post').mb-3
     +input(taskStatus, 'name', t('views.placeholders.name'), errors)(type='text')
     +submit(taskStatus)(value=t('views.statuses.new.submit'))
-    a.btn.btn-outline-secondary.ms-2(href=route('statuses'))= t('views.statuses.edit.cancel')

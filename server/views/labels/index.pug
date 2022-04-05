@@ -1,0 +1,28 @@
+extends ../layouts/application.pug
+
+block header
+  = t('layouts.application.labels')
+
+block content
+  a(href=route('newLabel')).btn.btn-primary= t('views.labels.new.create')
+  table.table.table-borderless.table-striped.mt-5.bg-white
+    thead
+      tr
+        th= t('views.labels.id')
+        th= t('views.labels.name')
+        th= t('views.labels.createdAt')
+        th= t('views.labels.options')
+    tbody
+      each taskLabel in taskLabels
+        tr
+          td= taskLabel.id
+          td= taskLabel.name
+          td= formatDate(taskLabel.createdAt)
+          td
+            .d-flex.flex-wrap
+              a(href=route('editLabel', { id: taskLabel.id })).btn.btn-outline-primary.me-1= t('views.labels.edit.submit')
+              +formFor()(action=route(`deleteLabel`, {id: taskLabel.id}) method='post')
+                input(name="_method" type="hidden" value="DELETE")
+                input(type='submit' value= t('views.labels.delete.submit')).btn.btn-outline-danger
+
+

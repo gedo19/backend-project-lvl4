@@ -4,7 +4,19 @@ block header
   = t('layouts.application.tasks')
 
 block content
-  a(href=route('newTask')).btn.btn-primary= t('views.tasks.new.create')
+  a(href=route('newTask')).btn.btn-primary.mb-5= t('views.tasks.new.create')
+  .card.shadow-sm
+    .card-body.p-4
+      +formFor()(action=route('tasks') method='get')
+        .row
+          .col-12.col-md
+            +fSelect('status', t('views.tasks.creator'), taskStatuses, filterCriterias)
+          .col-12.col-md
+            +fSelect('executor', t('views.tasks.executor'), executors, filterCriterias)
+          .col-12.col-md
+            +fSelect('label', t('views.tasks.label'), taskLabels, filterCriterias)
+        +checkbox('isCreatorUser', t('views.tasks.creatorTasks'), filterCriterias)
+        +submit(task)(value=t('layouts.application.filterTasks'))
   table.table.table-borderless.table-striped.mt-5.bg-white
     thead
       tr
@@ -14,21 +26,20 @@ block content
         th= t('views.tasks.creator')
         th= t('views.tasks.executor')
         th= t('views.tasks.createdAt')
-        if isAuthenticated()
-          th= t('views.tasks.options')
+        th= t('views.tasks.options')
     tbody
       each task in tasks
         tr
           td= task.id
-          td= task.name
+          td
+            a(href=route('task', { id: task.id }))= task.name
           td= task.status.name
           td= task.creator.name
-          td= task.executor.name
+          td= _.get(task.executor, 'name')
           td= formatDate(task.createdAt)
-          if isAuthenticated()
-            td
-              .d-flex.flex-wrap
-                a(href=route('editTask', {id: task.id})).btn.btn-outline-primary.me-1= t('views.tasks.edit.submit')
-                +formFor()(action=route(`deleteTask`, {id: task.id}) method='post')
-                  input(name="_method" type="hidden" value="DELETE")
-                  input(type='submit' value= t('views.tasks.delete.submit')).btn.btn-outline-danger
+          td
+            .d-flex.flex-wrap
+              a(href=route('editTask', { id: task.id })).btn.btn-outline-primary.me-1= t('views.tasks.edit.submit')
+              +formFor()(action=route(`deleteTask`, {id: task.id}) method='post')
+                input(name="_method" type="hidden" value="DELETE")
+                input(type='submit' value= t('views.tasks.delete.submit')).btn.btn-outline-danger
