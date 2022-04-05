@@ -13,7 +13,7 @@ const getFixtureData = (filename) => JSON.parse(readFixture(filename));
 export const authorize = async (app, data) => {
   const responseSignIn = await app.inject({
     method: 'POST',
-    url: app.reverse('session'),
+    url: app.reverse('session#create'),
     payload: {
       data,
     },

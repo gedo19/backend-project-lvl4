@@ -7,7 +7,7 @@ export default (app) => {
   app
     .get(
       '/labels',
-      { name: 'labels', preValidation: app.authorization },
+      { name: 'labels#index', preValidation: app.authorization },
       async (req, reply) => {
         const taskLabels = await app.objection.models.taskLabel.query();
 
@@ -17,7 +17,7 @@ export default (app) => {
     )
     .get(
       '/labels/new',
-      { name: 'newLabel', preValidation: app.authorization },
+      { name: 'labels#new', preValidation: app.authorization },
       async (req, reply) => {
         const taskLabel = new app.objection.models.taskLabel();
 
@@ -27,7 +27,7 @@ export default (app) => {
     )
     .get(
       '/labels/:id/edit',
-      { name: 'editLabel', preValidation: app.authorization },
+      { name: 'labels#edit', preValidation: app.authorization },
       async (req, reply) => {
         const { id: taskLabelId } = req.params;
         const taskLabel = await app.objection.models.taskLabel.query().findById(taskLabelId);
@@ -38,7 +38,7 @@ export default (app) => {
     )
     .post(
       '/labels',
-      { name: 'postLabel', preValidation: app.authorization },
+      { name: 'labels#create', preValidation: app.authorization },
       async (req, reply) => {
         const { data } = req.body;
 
@@ -46,7 +46,7 @@ export default (app) => {
           await app.objection.models.taskLabel.query().insert(data);
 
           req.flash('success', i18next.t('flash.labels.create.success'));
-          return reply.redirect(app.reverse('labels'));
+          return reply.redirect(app.reverse('labels#index'));
         } catch ({ data: errors }) {
           req.flash('error', i18next.t('flash.labels.create.error'));
           reply.code(422).render('labels/new', { taskLabel: data, errors });
@@ -56,7 +56,7 @@ export default (app) => {
     )
     .patch(
       '/labels/:id',
-      { name: 'updateLabel', preValidation: app.authorization },
+      { name: 'labels#update', preValidation: app.authorization },
       async (req, reply) => {
         const { id: taskLabelId } = req.params;
         const { data } = req.body;
@@ -66,7 +66,7 @@ export default (app) => {
           await taskLabel.$query().patch(data);
 
           req.flash('success', i18next.t('flash.labels.edit.success'));
-          return reply.redirect(app.reverse('labels'));
+          return reply.redirect(app.reverse('labels#index'));
         } catch ({ data: errors }) {
           taskLabel.$set(data);
 
@@ -78,7 +78,7 @@ export default (app) => {
     )
     .delete(
       '/labels/:id',
-      { name: 'deleteLabel', preValidation: app.authorization },
+      { name: 'labels#destroy', preValidation: app.authorization },
       async (req, reply) => {
         const { id: taskLabelId } = req.params;
 
@@ -93,7 +93,7 @@ export default (app) => {
           req.flash('error', i18next.t('flash.labels.delete.error'));
         }
 
-        return reply.redirect(app.reverse('labels'));
+        return reply.redirect(app.reverse('labels#index'));
       },
     );
 };

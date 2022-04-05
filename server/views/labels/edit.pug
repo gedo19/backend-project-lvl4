@@ -4,8 +4,8 @@ block header
   = t('layouts.application.editLabel')
 
 block content
-  +formFor()(action=route('updateLabel', { id: taskLabel.id }) method='post').mb-3
+  +formFor()(action=route('labels#update', { id: taskLabel.id }) method='post').mb-3
     +input(taskLabel, 'name', t('views.labels.name'), errors)
     input(type='hidden' name='_method' value='patch')
     +submit(taskLabel)(value=t('views.labels.edit.submit'))
-    a.btn.btn-outline-secondary.ms-2(href=route('labels'))= t('views.labels.edit.cancel')
+    a.btn.btn-outline-secondary.ms-2(href=route('labels#index'))= t('views.labels.edit.cancel')

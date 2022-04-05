@@ -28,7 +28,7 @@ describe('test labels CRUD', () => {
   it('index', async () => {
     const response = await app.inject({
       method: 'GET',
-      url: app.reverse('labels'),
+      url: app.reverse('labels#index'),
       cookies: cookie,
     });
 
@@ -38,7 +38,7 @@ describe('test labels CRUD', () => {
   it('new', async () => {
     const response = await app.inject({
       method: 'GET',
-      url: app.reverse('newLabel'),
+      url: app.reverse('labels#new'),
       cookies: cookie,
     });
 
@@ -51,7 +51,7 @@ describe('test labels CRUD', () => {
 
     const response = await app.inject({
       method: 'GET',
-      url: app.reverse('editLabel', { id }),
+      url: app.reverse('labels#edit', { id }),
       cookies: cookie,
     });
 
@@ -62,7 +62,7 @@ describe('test labels CRUD', () => {
     const labelData = testData.labels.new;
     const response = await app.inject({
       method: 'POST',
-      url: app.reverse('postLabel'),
+      url: app.reverse('labels#create'),
       payload: {
         data: labelData,
       },
@@ -84,7 +84,7 @@ describe('test labels CRUD', () => {
 
     const responseUpdate = await app.inject({
       method: 'PATCH',
-      url: app.reverse('updateLabel', { id }),
+      url: app.reverse('labels#update', { id }),
       payload: {
         data: newLabelData,
       },
@@ -103,7 +103,7 @@ describe('test labels CRUD', () => {
 
     const responseDelete = await app.inject({
       method: 'DELETE',
-      url: app.reverse('deleteLabel', { id }),
+      url: app.reverse('labels#destroy', { id }),
       cookies: cookie,
     });
 
