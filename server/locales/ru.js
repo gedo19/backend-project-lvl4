@@ -151,12 +151,10 @@ export default {
         creator: 'Автор',
         executor: 'Исполнитель',
         label: 'Метка',
+        labels: 'Метки',
         creatorTasks: 'Только мои задачи',
         createdAt: 'Дата создания',
         options: 'Опции',
-        filter: {
-
-        },
         new: {
           create: 'Создать задачу',
           submit: 'Создать',
