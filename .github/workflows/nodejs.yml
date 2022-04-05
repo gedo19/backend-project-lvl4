@@ -4,6 +4,10 @@ on:
   - push
   - pull_request
 
+env:
+  SESSION_KEY: ${{ secrets.SESSION_KEY }}
+  ROLLBAR_ACCESS_TOKEN: ${{ ROLLBAR_ACCESS_TOKEN }}
+
 jobs:
   build:
 
