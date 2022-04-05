@@ -10,7 +10,7 @@ export default {
           error: 'Неправильный e-mail или пароль',
         },
         delete: {
-          success: 'Выход выполнен',
+          success: 'Вы разлогинены',
         },
       },
       users: {

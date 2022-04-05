@@ -114,7 +114,7 @@ describe('test tasks CRUD', () => {
 
     const responseDelete = await app.inject({
       method: 'DELETE',
-      url: app.reverse('deleteTask', { id }),
+      url: app.reverse('tasks#destroy', { id }),
       cookies: cookie,
     });
 

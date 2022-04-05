@@ -177,7 +177,7 @@ export default (app) => {
     )
     .delete(
       '/tasks/:id',
-      { name: 'deleteTask', preValidation: app.authenticate },
+      { name: 'tasks#destroy', preValidation: app.authenticate },
       async (req, reply) => {
         const { id: taskId } = req.params;
 

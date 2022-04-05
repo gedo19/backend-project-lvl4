@@ -40,6 +40,6 @@ block content
           td
             .d-flex.flex-wrap
               a(href=route('editTask', { id: task.id })).btn.btn-outline-primary.me-1= t('views.tasks.edit.submit')
-              +formFor()(action=route(`deleteTask`, {id: task.id}) method='post')
+              +formFor()(action=route(`tasks#destroy`, {id: task.id}) method='post')
                 input(name="_method" type="hidden" value="DELETE")
                 input(type='submit' value= t('views.tasks.delete.submit')).btn.btn-outline-danger
