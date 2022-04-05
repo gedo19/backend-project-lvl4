@@ -126,7 +126,9 @@ const setErrorHandler = (app) => {
 
 // eslint-disable-next-line no-unused-vars
 export default async (app, options) => {
-  setErrorHandler(app);
+  if (mode === 'development') {
+    setErrorHandler(app);
+  }
   registerPlugins(app);
 
   await setupLocalization();
