@@ -6,7 +6,7 @@ export default {
     flash: {
       session: {
         create: {
-          success: 'Вход выполнен',
+          success: 'Вы залогинены',
           error: 'Неправильный e-mail или пароль',
         },
         delete: {
