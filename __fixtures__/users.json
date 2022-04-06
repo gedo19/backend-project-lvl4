@@ -1,19 +1,19 @@
 [
   {
-    "firstname": "Albert",
-    "lastname": "One",
+    "firstName": "Albert",
+    "lastName": "One",
     "email": "elbert_abshire52@gmail.com",
     "passwordDigest": "e52737ae855f81f6f2adbd5821188fc1cd6b2a7326fc4db955b29f6e0193eb15"
   },
   {
-    "firstname": "Elon",
-    "lastname": "Musk",
+    "firstName": "Elon",
+    "lastName": "Musk",
     "email": "lawrence.kulas87@outlook.com",
     "passwordDigest": "87c6374c24969f2af49433baa6d8b96e2bdb17a509b79049d2edb4fde98e4c46"
   },
   {
-    "firstname": "Steve",
-    "lastname": "Jobs",
+    "firstName": "Steve",
+    "lastName": "Jobs",
     "email": "nona_murray@yahoo.com",
     "passwordDigest": "760391e7dceb3cf65ee23e97ca3db8c1515d18c3434b003c1fd781053afcf86f"
   }

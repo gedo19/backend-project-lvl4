@@ -102,7 +102,7 @@ export default {
       },
       placeholders: {
         firstname: 'Имя',
-        lastname: 'Фамилия',
+        lastName: 'Фамилия',
         email: 'Email',
         password: 'Пароль',
         name: 'Наименование',

@@ -4,7 +4,7 @@ block content
   .form-signin
     h1.h3.mb-3.fw-normal= t('views.users.new.signUp')
     +formFor()(action=route('users#create') method='post')
-      +input(user, 'firstname', t('views.placeholders.firstname'), errors)(type='text')
+      +input(user, 'firstName', t('views.placeholders.firstName'), errors)(type='text')
       +input(user, 'lastname', t('views.placeholders.lastname'), errors)(type='text')
       +input(user, 'email', t('views.placeholders.email'),  errors)(type='text')
       +input(user, 'password', t('views.placeholders.password'), errors)(type='password')

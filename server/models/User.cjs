@@ -14,10 +14,10 @@ module.exports = class User extends unique(BaseModel) {
   static get jsonSchema() {
     return {
       type: 'object',
-      required: ['lastname', 'lastname', 'email', 'password'],
+      required: ['firstName', 'lastName', 'email', 'password'],
       properties: {
         id: { type: 'integer' },
-        firstname: { type: 'string', minLength: 1 },
+        firstName: { type: 'string', minLength: 1 },
         lastname: { type: 'string', minLength: 1 },
         email: { type: 'string', minLength: 1 },
         password: { type: 'string', minLength: 3 },
@@ -30,7 +30,7 @@ module.exports = class User extends unique(BaseModel) {
   }
 
   get name() {
-    return `${this.firstname} ${this.lastname}`;
+    return `${this.firstName} ${this.lastname}`;
   }
 
   verifyPassword(password) {

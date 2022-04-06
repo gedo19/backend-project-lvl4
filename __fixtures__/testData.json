@@ -1,8 +1,8 @@
 {
   "users": {
     "new": {
-      "firstname": "root",
-      "lastname": "user",
+      "firstName": "root",
+      "lastName": "user",
       "email": "malika_hodkiewicz75@live.com",
       "password": "RLJvaIgPOnX5r03"
     },
@@ -15,8 +15,8 @@
       "password": "2123dsa12dsaDS2"
     },
     "editing": {
-      "firstname": "Michael",
-      "lastname": "Kehn",
+      "firstName": "Michael",
+      "lastName": "Kehn",
       "email": "michael_kehn@gmail.com",
       "password": "DJn21SDAj37"
     }
