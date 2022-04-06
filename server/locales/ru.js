@@ -101,7 +101,7 @@ export default {
         },
       },
       placeholders: {
-        firstname: 'Имя',
+        firstName: 'Имя',
         lastName: 'Фамилия',
         email: 'Email',
         password: 'Пароль',

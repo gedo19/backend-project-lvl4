@@ -18,7 +18,7 @@ module.exports = class User extends unique(BaseModel) {
       properties: {
         id: { type: 'integer' },
         firstName: { type: 'string', minLength: 1 },
-        lastname: { type: 'string', minLength: 1 },
+        lastName: { type: 'string', minLength: 1 },
         email: { type: 'string', minLength: 1 },
         password: { type: 'string', minLength: 3 },
       },
@@ -30,7 +30,7 @@ module.exports = class User extends unique(BaseModel) {
   }
 
   get name() {
-    return `${this.firstName} ${this.lastname}`;
+    return `${this.firstName} ${this.lastName}`;
   }
 
   verifyPassword(password) {
