@@ -40,10 +40,9 @@ export default (app) => {
 
         req.flash('info', i18next.t('flash.users.create.success'));
         return reply.redirect(app.reverse('root#index'));
-      } catch (e) {
-        console.log(e)
+      } catch ({ data: errors }) {
         req.flash('error', i18next.t('flash.users.create.error'));
-        reply.code(422).render('users/new', { user: data, errors: e.data });
+        reply.code(422).render('users/new', { user: data, errors });
         return reply;
       }
     })
