@@ -1,7 +1,7 @@
 // @ts-check
 
 const objectionUnique = require('objection-unique');
-const encrypt = require('../lib/secure.cjs')
+const encrypt = require('../lib/secure.cjs');
 const BaseModel = require('./BaseModel.cjs');
 
 const unique = objectionUnique({ fields: ['email'] });
@@ -57,4 +57,4 @@ module.exports = class User extends unique(BaseModel) {
       },
     };
   }
-}
+};
