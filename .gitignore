@@ -4,5 +4,6 @@ build/
 dist/
 tmp/
 temp/
+coverage/
 database.sqlite
 .env
